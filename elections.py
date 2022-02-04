@@ -223,7 +223,7 @@ class Election:
         """
 
         result = {}
-        for (riding, records) in self._results.items():
+        for records in self._results.values():
             for (party, votes) in records.items():
                 if party not in result.keys():
                     result[party] = 0
