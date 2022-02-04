@@ -144,7 +144,8 @@ class Election:
         while line:
             record = line.split(',')
             self.update_results(record[1].strip().strip('\"').strip("\'"),
-                                record[13].strip().strip('\"').strip("\'"), int(record[17]))
+                                record[13].strip().strip('\"').strip("\'"),
+                                int(record[17]))
             line = input_stream.readline()
 
     def results_for(self, riding: str, party: str) -> Optional[int]:
@@ -223,7 +224,7 @@ class Election:
 
         result = {}
         for (riding, records) in self._results.items():
-            for (party, votes) in self._results[riding].items():
+            for (party, votes) in records.items():
                 if party not in result.keys():
                     result[party] = 0
                 result[party] += votes
@@ -253,7 +254,7 @@ class Election:
         result = {}
         for party in self._parties:
             result[party] = 0
-        for riding in self._results.keys():
+        for riding in self._ridings:
             winners = self.riding_winners(riding)
             if len(winners) == 1:
                 winner = winners[0]
@@ -422,7 +423,7 @@ class Jurisdiction:
                 if p == party:
                     party_votes += v
             if total_votes != 0:
-                result[d] = party_votes/total_votes
+                result[d] = party_votes / total_votes
         return result
 
     def riding_changes(self) -> List[Tuple[Set[str], Set[str]]]:
@@ -456,9 +457,9 @@ class Jurisdiction:
         result = []
         keys = list(self._elections.keys())
         keys.sort()
-        for i in range(len(keys)-1):
+        for i in range(len(keys) - 1):
             key1 = keys[i]
-            key2 = keys[i+1]
+            key2 = keys[i + 1]
             e1 = self._elections[key1]
             e2 = self._elections[key2]
             set1 = set(e1.ridings_recorded())
@@ -470,16 +471,7 @@ class Jurisdiction:
 
 
 if __name__ == '__main__':
-    '''
-    import python_ta
-    python_ta.check_all(config={
-        'allowed-io': ['Election.read_results', 'Jurisdiction.read_results'],
-        'allowed-import-modules': [
-            'doctest', 'python_ta', 'datetime', 'typing'
-        ],
-        'max-attributes': 15
-    })
-    '''
+
     import doctest
     doctest.testmod()
 
